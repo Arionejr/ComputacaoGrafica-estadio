@@ -69,6 +69,22 @@ void initTexture (void)
 	image_t temp_image5;
 	tgaLoad  ( "imagens/bola.tga", &temp_image5, TGA_FREE | TGA_LOW_QUALITY );
 	
+	glBindTexture ( GL_TEXTURE_2D, texture_id[6] );
+	image_t temp_image6;
+	tgaLoad  ( "imagens/toldo3.tga", &temp_image6, TGA_FREE | TGA_LOW_QUALITY );
+	
+	glBindTexture ( GL_TEXTURE_2D, texture_id[7] );
+	image_t temp_image7;
+	tgaLoad  ( "imagens/ceu.tga", &temp_image7, TGA_FREE | TGA_LOW_QUALITY );
+	
+	glBindTexture ( GL_TEXTURE_2D, texture_id[8] );
+	image_t temp_image8;
+	tgaLoad  ( "imagens/grade.tga", &temp_image8, TGA_FREE | TGA_LOW_QUALITY );
+	
+	glBindTexture ( GL_TEXTURE_2D, texture_id[9] );
+	image_t temp_image9;
+	tgaLoad  ( "imagens/chao.tga", &temp_image9, TGA_FREE | TGA_LOW_QUALITY );
+	
 }
 
 	
@@ -77,22 +93,38 @@ void Desenha(void)
 {
 	// Limpa a janela e o depth buffer
 	 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	 glClear(GL_COLOR_BUFFER_BIT);   
+	 glClear(GL_COLOR_BUFFER_BIT);  
+	 
+	 glEnable(GL_BLEND); 
      
      //ANEIS DA COBERTURA - CILINDROS
 	 //ANEL INFERIOR
 	 // seleciona e aplica textura 
-     gluQuadricTexture(quadratic,texture_id[1]); //CIMENTO
+	 
+  	 gluQuadricTexture(quadratic,GL_TRUE);
+	 glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //CIMENTO
 	 glPushMatrix();
      	//gltranslatef
      	glColor3f(2.55f,2.55f,2.55f);
 		glRotatef(90,20,0,0);  
-		gluCylinder(quadratic,40,31,0,50,50); 
-     glPopMatrix();
+		gluCylinder(quadratic,40,31,0,50,50);
+			glPushMatrix();
+				 gluQuadricTexture(quadratic,GL_TRUE);
+				 glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //CIMENTO
+				glTranslatef(0,0,-3);
+				glRotatef(90,20,0,0);
+	     		glColor3f(2.55f,2.55f,2.55f);
+				glRotatef(90,10,0,0);  
+				gluCylinder(quadratic,40,31,0,50,50);
+				glTranslatef(0,-3,0); 
+            glPopMatrix();	// fecha anel elevado inferior
+     glPopMatrix(); // fecha anel inferior terreo
+     glBindTexture ( GL_TEXTURE_2D, 0 );
      
      //ANEL SUPERIOR
-	 // seleciona e aplica textura 
-     gluQuadricTexture(quadratic,texture_id[1]);	//CIMENTO
+	 // seleciona e aplica textura
+	 gluQuadricTexture(quadratic,GL_TRUE);
+	 glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //CIMENTO
 	 glPushMatrix();
      	//gltranslatef
      	glTranslatef(0,20,0);
@@ -101,6 +133,58 @@ void Desenha(void)
 		gluCylinder(quadratic,40,31,0,50,50);
 		glTranslatef(0,-20,0); // zerando posição		
      glPopMatrix();
+     glBindTexture ( GL_TEXTURE_2D, 0 );
+     
+     gluQuadricTexture(quadratic,GL_TRUE);	//toldo
+	 glBindTexture ( GL_TEXTURE_2D, texture_id[6] );
+	 glPushMatrix();
+     	//gltranslatef
+     	glTranslatef(0,20,0);
+     	glColor3f(2.55f,2.55f,2.55f);
+		glRotatef(90,20,0,0);  
+		gluCylinder(quadratic,31,19,0.3,50,50);
+		glTranslatef(0,-20,0); // zerando posição
+			glPushMatrix();
+	  	         gluQuadricTexture(quadratic,GL_TRUE);	
+	 	 	 	 glBindTexture( GL_TEXTURE_2D, texture_id[8] ); 	//grade
+				 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	//TRANSPARENCIA
+		     	glTranslatef(0,20,0);
+		     	//glColor3f(2.55f,2.55f,2.55f);
+				glColor4f(2.55f,2.55f,2.55f,0.2);
+				//glRotatef(90,20,0,0);  
+				gluCylinder(quadratic,10,20,0.5,50,50);
+				glTranslatef(0,-20,0); // zerando posição	
+			glPopMatrix(); // FECHA ANEL INTERNO	
+     glPopMatrix();	//FECHA 2º NÍVEL DE ANEL
+     glBindTexture ( GL_TEXTURE_2D, 0);
+     
+     // FIM ESTRUTURAS CILINDRICAS
+     
+     // -> INICIO TELÕES
+     
+	 	 glBindTexture ( GL_TEXTURE_2D, texture_id[4] ); //TELÃO
+	     glPushMatrix();
+	        //glTranslatef(19,20,0);
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(15.0f, 15.0f, -2.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(15.0f, 18.0f, -2.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(15.0f, 18.0f, 2.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(15.0f, 15.0f, 2.0f);	 
+			glEnd();
+	     glPopMatrix();
+		 
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(-15.0f, 15.0f, -2.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(-15.0f, 18.0f, -2.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(-15.0f, 18.0f, 2.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(-15.0f, 15.0f, 2.0f);	 
+			glEnd();
+	     glPopMatrix();	     
+     
      
 // componetes do campo de futebol
 // -> TRAVES DOS GOLS
@@ -163,6 +247,7 @@ void Desenha(void)
 	     glPopMatrix();
 	     tamini += tamadc;
 		}
+		
 		glBindTexture ( GL_TEXTURE_2D, 0 ); //CIMENTO
 		tamini = -15.0;
 		for(int i=0; i< 3; i++){
@@ -263,7 +348,7 @@ void Desenha(void)
 			gluSphere(quadratic,0.2,30,30);
 		glPopMatrix();
         // FIM CAMPO
-     
+     glBindTexture ( GL_TEXTURE_2D, 0 ); //default
      //ARQUIBANCADA EM X
     float vlEsp,A,B,C,D,E,F,G,H,I,J,L,M,N,O,P,Q,R,S,T,U,V,X,Z,K;
     
@@ -419,7 +504,7 @@ void Desenha(void)
 
 			if(i == 9 || i == 14){
 				
-				for(int pula = 0; pula <3; pula++){
+				for(int pula = 0; pula <2; pula++){
 
 					
 					B = B + 0.4;
@@ -445,6 +530,52 @@ void Desenha(void)
 			} 
 	    }
 	    
+	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(-15.0f,  0.0f, -23.6f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(-15.0f, 11.60f, -23.6f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f( 15.0f, 11.6f, -23.6f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f( 15.0f,  0.0f, -23.6f);	 
+			glEnd();
+	     glPopMatrix();
+	     
+	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(-15.0f,  0.0f, 23.6f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(-15.0f, 11.6f, 23.6f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f( 15.0f, 11.6f, 23.6f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f( 15.0f,  0.0f, 23.6f);	 
+			glEnd();
+	     glPopMatrix();
+	     
+   	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(28.5f,  0.0f, -10.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(28.5f, 11.6f, -10.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(28.5f, 11.6f, 	10.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(28.5f,  0.0f, 	10.0f);	 
+			glEnd();
+	     glPopMatrix();
+	     
+   	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(-28.5f,  0.0f, -10.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(-28.5f, 11.6f, -10.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(-28.5f, 11.6f,  10.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(-28.5f,  0.0f,  10.0f);	 
+			glEnd();
+	     glPopMatrix();
+	     
+	     
+
 
 	    float AA, AB, AC, AD, AE, AF, AG, AH, AI, AJ, AL, AM, AN, AO, AP, AQ, AR, AS, AT, AU, AV, AX, AZ, AK;
 	    
@@ -597,7 +728,7 @@ void Desenha(void)
 			
 			if(j == 10 || j == 15){
 				
-				for(int pula = 0; pula <3; pula++){
+				for(int pula = 0; pula <2; pula++){
 
 					
 					AB += vlEsp	;
@@ -688,11 +819,32 @@ void Desenha(void)
 						
 	glEnd();
 	glPopMatrix();
+	
+      	// bola
+      	gluQuadricTexture(quadratic,GL_TRUE);
+      	glBindTexture ( GL_TEXTURE_2D, texture_id[7] ); //ceu
+		glPushMatrix();			
+			glTranslatef(0,0,0);
+			glColor3f(2.55f, 2.55f, 2.55f);
+			gluSphere(quadratic,200,50,50);
+		glPopMatrix();
+		
 
-
-		   
+		glBindTexture ( GL_TEXTURE_2D, texture_id[9] ); //chão	
+		glPushMatrix();
+	        glColor3f(2.55f, 2.55f, 2.55f);
+	        glBegin(GL_QUADS);
+			      	glTexCoord2f(0.0f, 0.0f); glVertex3f(-200, -0.1, -200);
+			    	glTexCoord2f(1.0f, 0.0f); glVertex3f( 200, -0.1, -200);
+		 			glTexCoord2f(1.0f, 1.0f); glVertex3f( 200, -0.1,  200);
+			    	glTexCoord2f(0.0f, 1.0f); glVertex3f(-200, -0.1,  200);
+	        glEnd();  
+  		glPopMatrix(); 
+				   
 		        
 	    glutSwapBuffers();
+	    
+	    
 }
 
 // Inicializa parâmetros de rendering
