@@ -30,7 +30,7 @@ GLUquadricObj *quadratic;
 	
 
 // Qtd máxima de texturas a serem usadas no programa
-#define MAX_NO_TEXTURES 1
+#define MAX_NO_TEXTURES 100
 // vetor com os números das texturas
 GLuint texture_id[MAX_NO_TEXTURES];
 
@@ -59,8 +59,15 @@ void initTexture (void)
 	
 	glBindTexture ( GL_TEXTURE_2D, texture_id[3] );
 	image_t temp_image3;
-	tgaLoad  ( "imagens/grama.tga", &temp_image3, TGA_FREE | TGA_LOW_QUALITY );	
+	tgaLoad  ( "imagens/grama.tga", &temp_image3, TGA_FREE | TGA_LOW_QUALITY );
 	
+	glBindTexture ( GL_TEXTURE_2D, texture_id[4] );
+	image_t temp_image4;
+	tgaLoad  ( "imagens/flamengo.tga", &temp_image4, TGA_FREE | TGA_LOW_QUALITY );	
+	
+	glBindTexture ( GL_TEXTURE_2D, texture_id[5] );
+	image_t temp_image5;
+	tgaLoad  ( "imagens/bola.tga", &temp_image5, TGA_FREE | TGA_LOW_QUALITY );
 	
 }
 
@@ -75,27 +82,143 @@ void Desenha(void)
      //ANEIS DA COBERTURA - CILINDROS
 	 //ANEL INFERIOR
 	 // seleciona e aplica textura 
-	 glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //CIMENTO
-     glPushMatrix();
+     gluQuadricTexture(quadratic,texture_id[1]); //CIMENTO
+	 glPushMatrix();
      	//gltranslatef
      	glColor3f(2.55f,2.55f,2.55f);
 		glRotatef(90,20,0,0);  
-		gluCylinder(quadratic,35,25,0,50,50); 
+		gluCylinder(quadratic,40,31,0,50,50); 
      glPopMatrix();
      
      //ANEL SUPERIOR
 	 // seleciona e aplica textura 
-	 glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //CIMENTO
-     glPushMatrix();
+     gluQuadricTexture(quadratic,texture_id[1]);	//CIMENTO
+	 glPushMatrix();
      	//gltranslatef
      	glTranslatef(0,20,0);
      	glColor3f(2.55f,2.55f,2.55f);
 		glRotatef(90,20,0,0);  
-		gluCylinder(quadratic,35,25,0,50,50); 
+		gluCylinder(quadratic,40,31,0,50,50);
+		glTranslatef(0,-20,0); // zerando posição		
      glPopMatrix();
      
+// componetes do campo de futebol
+// -> TRAVES DOS GOLS
+     //Trave X+
+     glPushMatrix();
+     	 glTranslatef(14.5,2,1.5);
+	 	 glRotatef(90,1,0,0);
+	 	 gluCylinder(quadratic,0.1,0.1,2,50,50);
+	 	 glTranslatef(-14.5,-2,-1.5);
+      glPopMatrix();
+  	  glPushMatrix();
+     	 glTranslatef(14.5,2,-1.5);
+	 	 glRotatef(90,1,0,0);
+	 	 gluCylinder(quadratic,0.1,0.1,2,50,50);
+	 	 glTranslatef(-14.5,-2,1.5);
+      glPopMatrix();
+     glPushMatrix(); // travessão
+     	 glTranslatef(14.5,2,-1.5);
+	 	 //glRotatef(90,1,0,0);
+	 	 gluCylinder(quadratic,0.1,0.1,3,50,50);
+	 	 glTranslatef(-14.5,-2,1.5);
+      glPopMatrix();
+      
+      // Trave X-
+     glPushMatrix();
+     	 glTranslatef(-14.5,2,1.5);
+	 	 glRotatef(90,1,0,0);
+	 	 gluCylinder(quadratic,0.1,0.1,2,50,50);
+	 	 glTranslatef(14.5,-2,-1.5);
+      glPopMatrix();
+  	  glPushMatrix();
+     	 glTranslatef(-14.5,2,-1.5);
+	 	 glRotatef(90,1,0,0);
+	 	 gluCylinder(quadratic,0.1,0.1,2,50,50);
+	 	 glTranslatef(-14.5,-2,1.5);
+      glPopMatrix();
+     glPushMatrix(); // travessão
+     	 glTranslatef(-14.5,2,-1.5);
+	 	 //glRotatef(90,1,0,0);
+	 	 gluCylinder(quadratic,0.1,0.1,3,50,50);
+	 	 glTranslatef(14.5,-2,1.5);
+      glPopMatrix();  
+	  
+// -> PLACAS PUBLICITÁRIAS LATERAIS
+		float tamini = -15.0;
+		float tamadc =  10.0;
+
+		for(int i=0; i< 3; i++){
+	 	 // seleciona e aplica textura 
+	 	 glBindTexture ( GL_TEXTURE_2D, texture_id[4] ); //CIMENTO
+	     glPushMatrix();
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(tamini, 0.0f, -10.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(tamini, 1.0f, -10.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f( tamini+tamadc, 1.0f, -10.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f( tamini+tamadc, 0.0f, -10.0f);	 
+			glEnd();
+	     glPopMatrix();
+	     tamini += tamadc;
+		}
+		glBindTexture ( GL_TEXTURE_2D, 0 ); //CIMENTO
+		tamini = -15.0;
+		for(int i=0; i< 3; i++){
+	 	 // seleciona e aplica textura 
+	 	 glBindTexture ( GL_TEXTURE_2D, texture_id[4] ); //CIMENTO
+	     glPushMatrix();
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(tamini, 0.0f, 10.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(tamini, 1.0f, 10.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f( tamini+tamadc, 1.0f, 10.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f( tamini+tamadc, 0.0f, 10.0f);	 
+			glEnd();
+	     glPopMatrix();
+	     tamini += tamadc;
+		}
+		
+// -> PLACAS PUBLICITÁRIAS DE FUNDO
+		
+		tamini = -10.0;
+		tamadc = 5.0;
+		for(int i=0; i< 4; i++){
+	 	 // seleciona e aplica textura 
+	 	 glBindTexture ( GL_TEXTURE_2D, texture_id[4] ); //CIMENTO
+	     glPushMatrix();
+			glBegin(GL_QUADS);
+				glColor3f(2.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(15.0f, 0.0f, tamini);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(15.0f, 1.0f, tamini);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(15.0f, 1.0f, tamini+tamadc);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(15.0f, 0.0f, tamini+tamadc);	 
+			glEnd();
+	     glPopMatrix();
+	     tamini += tamadc;
+		}
+		
+		tamini = -10.0;
+		for(int i=0; i< 4; i++){
+	 	 // seleciona e aplica textura 
+	 	 glBindTexture ( GL_TEXTURE_2D, texture_id[4] ); //CIMENTO
+	     glPushMatrix();
+			glBegin(GL_QUADS);
+				glColor3f(02.55f,2.55f,2.55f);
+				//glNormal3f(0.0f, 1.0f, 0.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(-15.0f, 0.0f, tamini);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(-15.0f, 1.0f, tamini);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(-15.0f, 1.0f, tamini+tamadc);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(-15.0f, 0.0f, tamini+tamadc);	 
+			glEnd();
+	     glPopMatrix();
+	     tamini += tamadc;
+		}
      
-     //FIM - ANEIS DA COBERTURA - CILINDROS
+     
      
      // CAMPO 
 	 // seleciona e aplica textura 
@@ -110,6 +233,8 @@ void Desenha(void)
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-15.0f, 0.1f,  10.0f);	 
 		glEnd();
      glPopMatrix();
+     glBindTexture ( GL_TEXTURE_2D, 0 );
+     
 	 glBindTexture ( GL_TEXTURE_2D, texture_id[3] );
      glPushMatrix();
      	 glBegin(GL_POLYGON);
@@ -124,7 +249,20 @@ void Desenha(void)
 			glTexCoord2f(0.4f, 	0.4f); glVertex3f(-15.0f, 	0.0f,  	 12.0f);	  
 			glTexCoord2f(0.4f, 	0.8f); glVertex3f( 15.0f,	0.0f,	 12.0f);
 		 glEnd();
-     // FIM CAMPO
+      glPopMatrix();
+      glBindTexture ( GL_TEXTURE_2D, 0 ); //default
+      
+      
+      	// bola
+      	gluQuadricTexture(quadratic,GL_TRUE);
+      	glBindTexture ( GL_TEXTURE_2D, texture_id[5] ); //bola.tga
+		glPushMatrix();			
+			glTranslatef(0,0.3,0);
+			glColor3f(2.55f, 2.55f, 2.55f);
+			//glutSolidSphere(1,16,16);
+			gluSphere(quadratic,0.2,30,30);
+		glPopMatrix();
+        // FIM CAMPO
      
      //ARQUIBANCADA EM X
     float vlEsp,A,B,C,D,E,F,G,H,I,J,L,M,N,O,P,Q,R,S,T,U,V,X,Z,K;
@@ -307,30 +445,6 @@ void Desenha(void)
 			} 
 	    }
 	    
-	    /*
-	    //VERTICAL
-	    glPushMatrix();
-	    	glColor3f(0.0f,0.0f,1.0f);
-	    	glBegin(GL_QUADS);
-	    		glVertex3f(-15.0f,1.7f,13.6f);
-				glVertex3f(-15.0f,2.1f,13.6f);
-				glVertex3f(-18.6f,2.1f,10.0f);
-				glVertex3f(-18.6f,1.7f,10.0f);
-			glEnd();
-		glPopMatrix();
-		/*
-		//HORIZONTAL
-	    glPushMatrix();
-	    	glColor3f(0.0f,1.0f,0.0f);
-	    	glBegin(GL_QUADS);
-	    		glVertex3f(-15.0f,2.1f,-13.6f);
-				glVertex3f(-15.0f,2.1f,-14.0f); // Z = +0.4
-				glVertex3f(-19.0f,2.1f,-10.0f); // X = +0.4 Ref. seq. anterior
-				glVertex3f(-18.6f,2.1f,-10.0f);
-			glEnd();
-		glPopMatrix();	    		
-	    */
-	    
 
 	    float AA, AB, AC, AD, AE, AF, AG, AH, AI, AJ, AL, AM, AN, AO, AP, AQ, AR, AS, AT, AU, AV, AX, AZ, AK;
 	    
@@ -509,65 +623,73 @@ void Desenha(void)
 				}
 			}			
 	    
+		}glBindTexture ( GL_TEXTURE_2D, 0);
+		
+		
+		// estruturas cilindricas 3 niveis
+		
+		// seleciona e aplica textura 
+	 	glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //CIMENTO		
+		
+		glPushMatrix();		
+		GLUquadricObj *obj[216];
+		for (int i = 0; i < 216; i++)
+		{
+		   	obj[i] = gluNewQuadric();
+		}
+
+		float raio = 32.0;
+		float adRaio = 3.0;
+		glRotatef(270,1,0,0);
+		glTranslatef(raio, 0.0f, 0.0f);
+		int index = 0;
+		
+		for(int i=0; i<72; i++){
+			
+				gluQuadricTexture(obj[index],texture_id[1]);
+				//interno
+				gluCylinder(obj[index], 0.5, 0.5, 20, 50, 50);
+				glTranslatef(raio*(-1), 0.0f, 0.0f);
+				glRotatef(5,0,0,1);
+				glTranslatef(raio, 0.0f, 0.0f);
+				index += 1;
 		}
 		
+		
+		glTranslatef(raio*(-1), 0.0f, 0.0f);
+		raio += adRaio;
+		glTranslatef(raio, 0.0f, 0.0f);
+		
+		for(int i=0; i<72; i++){
+				
+				gluQuadricTexture(obj[index],texture_id[1]);
+				//interno
+				gluCylinder(obj[index], 0.5, 0.5, 20, 50, 50);
+				glTranslatef(raio*(-1), 0.0f, 0.0f);
+				glRotatef(5,0,0,1);
+				glTranslatef(raio, 0.0f, 0.0f);
+				index += 1;
+		}
+		
+		glTranslatef(raio*(-1), 0.0f, 0.0f);
+		raio += adRaio;
+		glTranslatef(raio, 0.0f, 0.0f);
+		
+		for(int i=0; i<72; i++){
+
+				gluQuadricTexture(obj[index],texture_id[1]);
+				//interno
+				gluCylinder(obj[index], 0.5, 0.5, 20, 50, 50);
+				glTranslatef(raio*(-1), 0.0f, 0.0f);
+				glRotatef(5,0,0,1);
+				glTranslatef(raio, 0.0f, 0.0f);
+				index += 1;
+		}
+						
+	glEnd();
+	glPopMatrix();
 
 
-/* --- 		CILINDROS		--- */
-/*
-		// CILINDRO
-		glPushMatrix();
-			glTranslatef(20,5,10); 
-			glRotatef(90,10,0,0);			
-    		glColor3f(1,0,0);    		   		
-    		gluCylinder(quadratic, 0.2, 0.2, 5, 30, 30); // base, topo, altura, slices, stacks
-    	//glPopMatrix();
-    	
-		//glPushMatrix();
-			glTranslatef(5,0,0); 
-			//glRotatef(90,10,0,0);			
-    		//glColor3f(1,0,0);    		   		
-    		gluCylinder(quadratic, 0.2, 0.2, 5, 30, 30); // base, topo, altura, slices, stacks
-    	//glPopMatrix();
-    	
-		//glPushMatrix();
-			glTranslatef(-5,5,0); 
-			//glRotatef(90,10,0,0);			
-    		//glColor3f(1,0,0);    		   		
-    		gluCylinder(quadratic, 0.2, 0.2, 5, 30, 30); // base, topo, altura, slices, stacks
-    	//glPopMatrix();
-    	
-		//glPushMatrix();
-			glTranslatef(5,0,0); 
-			//glRotatef(90,10,0,0);			
-    		//glColor3f(1,0,0);    		   		
-    		gluCylinder(quadratic, 0.2, 0.2, 5, 30, 30); // base, topo, altura, slices, stacks
-    		
-
-*/	
-
-		glPushMatrix();
-			glTranslatef(0,0,0);
-			glColor3f(1,0,0);
-			glutSolidSphere(1,16,16);
-		glPopMatrix();	
-
-
-
-
-/*
-    	
-    	// GRAMADO - PISO
-    	glPushMatrix();
-			glBegin(GL_QUADS);
-				glColor3f(0,1,0); // verde gramado
-				glVertex3f(-50,0,-50);
-				glVertex3f(50,0,-50);
-				glVertex3f(50,0,50);
-				glVertex3f(-50,0,50);             
-     	 	glEnd();
-  	 	glPopMatrix();
-*/  
 		   
 		        
 	    glutSwapBuffers();
