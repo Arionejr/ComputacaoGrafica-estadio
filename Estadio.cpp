@@ -85,6 +85,10 @@ void initTexture (void)
 	image_t temp_image9;
 	tgaLoad  ( "imagens/chao.tga", &temp_image9, TGA_FREE | TGA_LOW_QUALITY );
 	
+	glBindTexture ( GL_TEXTURE_2D, texture_id[10] );
+	image_t temp_image10;
+	tgaLoad  ( "imagens/painel.tga", &temp_image10, TGA_FREE | TGA_LOW_QUALITY );
+	
 }
 
 	
@@ -162,15 +166,15 @@ void Desenha(void)
      
      // -> INICIO TELÕES
      
-	 	 glBindTexture ( GL_TEXTURE_2D, texture_id[4] ); //TELÃO
+	 	 glBindTexture ( GL_TEXTURE_2D, texture_id[10] ); //TELÃO
 	     glPushMatrix();
 	        //glTranslatef(19,20,0);
 			glBegin(GL_QUADS);
 				glColor3f(2.55f,2.55f,2.55f);
 				//glNormal3f(0.0f, 1.0f, 0.0f);
 				glTexCoord2f(1.0f, 0.0f); glVertex3f(15.0f, 15.0f, -2.0f);
-				glTexCoord2f(1.0f, 1.0f); glVertex3f(15.0f, 18.0f, -2.0f);
-				glTexCoord2f(0.0f, 1.0f); glVertex3f(15.0f, 18.0f, 2.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(15.0f, 19.0f, -2.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(15.0f, 19.0f, 2.0f);
 				glTexCoord2f(0.0f, 0.0f); glVertex3f(15.0f, 15.0f, 2.0f);	 
 			glEnd();
 	     glPopMatrix();
@@ -179,11 +183,12 @@ void Desenha(void)
 				glColor3f(2.55f,2.55f,2.55f);
 				//glNormal3f(0.0f, 1.0f, 0.0f);
 				glTexCoord2f(1.0f, 0.0f); glVertex3f(-15.0f, 15.0f, -2.0f);
-				glTexCoord2f(1.0f, 1.0f); glVertex3f(-15.0f, 18.0f, -2.0f);
-				glTexCoord2f(0.0f, 1.0f); glVertex3f(-15.0f, 18.0f, 2.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(-15.0f, 19.0f, -2.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(-15.0f, 19.0f, 2.0f);
 				glTexCoord2f(0.0f, 0.0f); glVertex3f(-15.0f, 15.0f, 2.0f);	 
 			glEnd();
 	     glPopMatrix();	     
+	     glBindTexture ( GL_TEXTURE_2D, 0 );
      
      
 // componetes do campo de futebol
@@ -530,7 +535,7 @@ void Desenha(void)
 			} 
 	    }
 	    
-	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); // fundo das arquibancadas
 			glBegin(GL_QUADS);
 				glColor3f(2.55f,2.55f,2.55f);
 				//glNormal3f(0.0f, 1.0f, 0.0f);
@@ -541,7 +546,7 @@ void Desenha(void)
 			glEnd();
 	     glPopMatrix();
 	     
-	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //fundo das arquibancadas	
 			glBegin(GL_QUADS);
 				glColor3f(2.55f,2.55f,2.55f);
 				//glNormal3f(0.0f, 1.0f, 0.0f);
@@ -552,7 +557,7 @@ void Desenha(void)
 			glEnd();
 	     glPopMatrix();
 	     
-   	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+   	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //fundo das arquibancadas	
 			glBegin(GL_QUADS);
 				glColor3f(2.55f,2.55f,2.55f);
 				//glNormal3f(0.0f, 1.0f, 0.0f);
@@ -563,7 +568,7 @@ void Desenha(void)
 			glEnd();
 	     glPopMatrix();
 	     
-   	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //chão	
+   	    glBindTexture ( GL_TEXTURE_2D, texture_id[1] ); //fundo das arquibancadas
 			glBegin(GL_QUADS);
 				glColor3f(2.55f,2.55f,2.55f);
 				//glNormal3f(0.0f, 1.0f, 0.0f);
@@ -820,7 +825,7 @@ void Desenha(void)
 	glEnd();
 	glPopMatrix();
 	
-      	// bola
+      	// ceu
       	gluQuadricTexture(quadratic,GL_TRUE);
       	glBindTexture ( GL_TEXTURE_2D, texture_id[7] ); //ceu
 		glPushMatrix();			
@@ -829,7 +834,7 @@ void Desenha(void)
 			gluSphere(quadratic,200,50,50);
 		glPopMatrix();
 		
-
+		// chão com textura de grama
 		glBindTexture ( GL_TEXTURE_2D, texture_id[9] ); //chão	
 		glPushMatrix();
 	        glColor3f(2.55f, 2.55f, 2.55f);
